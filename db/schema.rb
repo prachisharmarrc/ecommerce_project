@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_08_162334) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_08_172029) do
   create_table "cart_items", force: :cascade do |t|
     t.integer "cart_id", null: false
     t.integer "product_id", null: false
@@ -32,6 +32,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_08_162334) do
     t.string "category_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "categories_products", id: false, force: :cascade do |t|
+    t.integer "product_id", null: false
+    t.integer "category_id", null: false
+    t.index ["category_id"], name: "index_categories_products_on_category_id"
+    t.index ["product_id"], name: "index_categories_products_on_product_id"
   end
 
   create_table "order_items", force: :cascade do |t|
@@ -69,11 +76,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_08_162334) do
     t.text "description"
     t.decimal "price"
     t.integer "stock_quantity"
-    t.integer "category_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "image_url"
-    t.index ["category_id"], name: "index_products_on_category_id"
   end
 
   create_table "taxes", force: :cascade do |t|
@@ -115,5 +120,4 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_08_162334) do
   add_foreign_key "order_taxes", "orders"
   add_foreign_key "order_taxes", "taxes"
   add_foreign_key "orders", "users"
-  add_foreign_key "products", "categories"
 end

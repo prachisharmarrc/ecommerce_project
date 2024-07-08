@@ -1,6 +1,6 @@
 class Category < ApplicationRecord
-   
-        has_many :products
-      end
-      
-
+    has_and_belongs_to_many :products
+  
+    validates :category_name, presence: true
+  end
+  

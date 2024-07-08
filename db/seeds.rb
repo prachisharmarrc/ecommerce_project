@@ -16,16 +16,19 @@ categories = [
   Category.create!(category_name: "Custom Design T-Shirts")
 ]
 
-# Create products with images from Lorem Picsum
+# Create products with static images from Lorem Picsum
 100.times do
-  Product.create!(
+  product = Product.create!(
     product_name: "#{Faker::Color.color_name.capitalize} #{['T-Shirt', 'Tee', 'Top', 'Shirt'].sample}",
     description: Faker::Marketing.buzzwords,
     price: Faker::Commerce.price(range: 10.0..100.0),
     stock_quantity: Faker::Number.between(from: 1, to: 100),
-    category: categories.sample,
-    image_url: "https://picsum.photos/200/300?random=#{rand(1..1000)}"
+    image_url: "https://picsum.photos/seed/#{Faker::Alphanumeric.alphanumeric(number: 10)}/200/300"
   )
+  # Associate each product with one or more categories
+  categories.sample(rand(1..4)).each do |category|
+    product.categories << category
+  end
 end
 
 # Display the number of products by category
