@@ -7,6 +7,18 @@ OrderItem.delete_all
 Order.delete_all
 Product.delete_all
 Category.delete_all
+User.delete_all
+Tax.delete_all
+
+# Create a user
+user = User.create!(
+  email: 'user@example.com',
+  password: 'password',
+  address: '123 Main St',
+  city: 'Winnipeg',
+  province: 'MB',
+  postal_code: 'R3C 0A1'
+)
 
 # Create categories
 categories = [
@@ -30,6 +42,13 @@ categories = [
     product.categories << category
   end
 end
+
+# Create taxes
+Tax.create!(region: 'MB', tax_type: 'GST', tax_rate: 0.05)
+Tax.create!(region: 'MB', tax_type: 'PST', tax_rate: 0.07)
+Tax.create!(region: 'ON', tax_type: 'HST', tax_rate: 0.13)
+Tax.create!(region: 'BC', tax_type: 'GST', tax_rate: 0.05)
+Tax.create!(region: 'BC', tax_type: 'PST', tax_rate: 0.07)
 
 # Display the number of products by category
 categories.each do |category|

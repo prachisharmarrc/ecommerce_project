@@ -4,8 +4,12 @@ class Cart < ApplicationRecord
   has_many :products, through: :cart_items
 
   def total_price
-    cart_items.includes(:product).reduce(0) do |sum, cart_item|
-      sum + (cart_item.product.price * cart_item.quantity)
-    end
+    cart_items.sum { |item| item.quantity * item.product.price }
+  end
+
+  def total_tax
+    # Assuming you have a Tax model with a `tax_rate` attribute
+    taxes = Tax.where(region: user.province)
+    taxes.sum { |tax| total_price * tax.tax_rate }
   end
 end

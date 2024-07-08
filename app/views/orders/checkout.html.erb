@@ -1,0 +1,32 @@
+<h1>Checkout</h1>
+<%= form_with model: @order, url: orders_path do |f| %>
+  <div>
+    <%= f.label :address %>
+    <%= f.text_field :address %>
+  </div>
+  <div>
+    <%= f.label :city %>
+    <%= f.text_field :city %>
+  </div>
+  <div>
+    <%= f.label :province %>
+    <%= f.text_field :province %>
+  </div>
+  <div>
+    <%= f.label :postal_code %>
+    <%= f.text_field :postal_code %>
+  </div>
+  <h2>Items</h2>
+  <ul>
+    <% @cart.cart_items.each do |item| %>
+      <li>
+        <%= image_tag(item.product.image_url, alt: item.product.product_name, style: "width: 100px; height: auto;") %>
+        <p><%= item.product.product_name %> - Quantity: <%= item.quantity %> - Price: <%= number_to_currency(item.product.price) %></p>
+      </li>
+    <% end %>
+  </ul>
+  <p>Subtotal: <%= number_to_currency(@subtotal) %></p>
+  <p>Taxes: <%= number_to_currency(@taxes) %></p>
+  <p>Total: <%= number_to_currency(@total) %></p>
+  <%= f.submit 'Place Order' %>
+<% end %>

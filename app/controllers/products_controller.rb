@@ -1,9 +1,13 @@
 class ProductsController < ApplicationController
   def index
-    if params[:query].present?
-      @products = Product.where("product_name LIKE ?", "%#{params[:query]}%")
-    else
-      @products = Product.all
+    @products = Product.all
+
+    if params[:keyword].present?
+      @products = @products.where('product_name LIKE ? OR description LIKE ?', "%#{params[:keyword]}%", "%#{params[:keyword]}%")
+    end
+
+    if params[:category_id].present?
+      @products = @products.joins(:categories).where(categories: { id: params[:category_id] })
     end
   end
 

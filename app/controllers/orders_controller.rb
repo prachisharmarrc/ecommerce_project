@@ -6,27 +6,46 @@ class OrdersController < ApplicationController
   end
 
   def show
-    @order = Order.find(params[:id])
+    @order = current_user.orders.find(params[:id])
   end
 
   def new
-    @order = Order.new
+    redirect_to checkout_orders_path
   end
 
   def create
+    @cart = current_user.cart
     @order = current_user.orders.build(order_params)
-    @order.total_price = current_user.cart.total_price
+    @order.total_price = @cart.total_price
     if @order.save
-      current_user.cart.cart_items.destroy_all
+      @cart.cart_items.each do |cart_item|
+        @order.order_items.create!(
+          product_id: cart_item.product_id,
+          quantity: cart_item.quantity,
+          price: cart_item.product.price
+        )
+      end
+      @order.applicable_taxes.each do |tax|
+        @order.order_taxes.create!(tax: tax, tax_amount: tax.tax_rate * @order.total_price)
+      end
+      @cart.cart_items.destroy_all
       redirect_to @order, notice: 'Order was successfully created.'
     else
-      render :new
+      render :checkout
     end
+  end
+
+  def checkout
+    @cart = current_user.cart
+    @order = current_user.orders.build
+    @subtotal = @cart.total_price
+    @taxes = @cart.total_tax
+    @total = @subtotal + @taxes
   end
 
   private
 
   def order_params
-    params.require(:order).permit(:status)
+    params.require(:order).permit(:status, :address, :city, :province, :postal_code)
   end
 end
