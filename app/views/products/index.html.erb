@@ -2,7 +2,10 @@
 <ul>
   <% @products.each do |product| %>
     <li>
-      <%= link_to product.product_name, product_path(product) %>
+      <% if product.image_url.present? %>
+        <img src="<%= product.image_url %>" alt="<%= product.product_name %>" style="width: 150px; height: auto;">
+      <% end %>
+      <a href="<%= product_path(product) %>"><%= product.product_name %></a>
       <p><%= product.description %></p>
       <p><%= number_to_currency(product.price) %></p>
     </li>

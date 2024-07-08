@@ -1,0 +1,12 @@
+<h1>Checkout</h1>
+
+<%= form_with model: @order, local: true do |f| %>
+  <div>
+    <%= f.label :status, "Order Status" %>
+    <%= f.text_field :status %>
+  </div>
+
+  <div>
+    <%= f.submit "Place Order" %>
+  </div>
+<% end %>
