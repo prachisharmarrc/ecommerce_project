@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_08_181743) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_08_201757) do
   create_table "cart_items", force: :cascade do |t|
     t.integer "cart_id", null: false
     t.integer "product_id", null: false
@@ -88,7 +88,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_08_181743) do
   create_table "taxes", force: :cascade do |t|
     t.string "region"
     t.string "tax_type"
-    t.decimal "tax_rate"
+    t.decimal "tax_rate", precision: 5, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -112,6 +112,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_08_181743) do
     t.datetime "last_sign_in_at", precision: nil
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
+    t.string "region"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

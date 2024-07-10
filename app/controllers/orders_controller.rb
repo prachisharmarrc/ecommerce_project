@@ -17,6 +17,7 @@ class OrdersController < ApplicationController
     @cart = current_user.cart
     @order = current_user.orders.build(order_params)
     @order.total_price = @cart.total_price
+
     if @order.save
       @cart.cart_items.each do |cart_item|
         @order.order_items.create!(
@@ -25,9 +26,11 @@ class OrdersController < ApplicationController
           price: cart_item.product.price
         )
       end
+
       @order.applicable_taxes.each do |tax|
         @order.order_taxes.create!(tax: tax, tax_amount: tax.tax_rate * @order.total_price)
       end
+
       @cart.cart_items.destroy_all
       redirect_to @order, notice: 'Order was successfully created.'
     else
@@ -39,7 +42,7 @@ class OrdersController < ApplicationController
     @cart = current_user.cart
     @order = current_user.orders.build
     @subtotal = @cart.total_price
-    @taxes = @cart.total_tax
+    @taxes = @cart.total_taxes
     @total = @subtotal + @taxes
   end
 
