@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
+  get 'static_pages/show'
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
-  
+
   devise_for :users
   resources :products
   resources :categories
@@ -15,5 +16,7 @@ Rails.application.routes.draw do
       get 'checkout'
     end
   end
+   get '/static_pages/:title', to: 'static_pages#show', as: 'static_page'
+  
   root 'products#index'
 end

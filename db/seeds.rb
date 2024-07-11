@@ -1,4 +1,5 @@
 require 'faker'
+require 'open-uri'
 
 # Clear existing data
 CartItem.delete_all
@@ -9,6 +10,7 @@ Product.delete_all
 Category.delete_all
 User.delete_all
 Tax.delete_all
+StaticPage.delete_all  # Clear existing static pages
 
 # Create a user
 user = User.create!(
@@ -30,13 +32,20 @@ categories = [
 
 # Create products with static images from Lorem Picsum
 100.times do
-  product = Product.create!(
+  product = Product.new(
     product_name: "#{Faker::Color.color_name.capitalize} #{['T-Shirt', 'Tee', 'Top', 'Shirt'].sample}",
     description: Faker::Marketing.buzzwords,
     price: Faker::Commerce.price(range: 10.0..100.0),
-    stock_quantity: Faker::Number.between(from: 1, to: 100),
-    image_url: "https://picsum.photos/seed/#{Faker::Alphanumeric.alphanumeric(number: 10)}/200/300"
+    stock_quantity: Faker::Number.between(from: 1, to: 100)
   )
+  
+  # Attach an image to the product
+  image_file = URI.open("https://picsum.photos/seed/#{Faker::Alphanumeric.alphanumeric(number: 10)}/200/300")
+  product.image.attach(io: image_file, filename: "image.jpg")
+  
+  # Save the product
+  product.save!
+  
   # Associate each product with one or more categories
   categories.sample(rand(1..4)).each do |category|
     product.categories << category
@@ -50,9 +59,13 @@ Tax.create!(region: 'ON', tax_type: 'HST', tax_rate: 0.13)
 Tax.create!(region: 'BC', tax_type: 'GST', tax_rate: 0.05)
 Tax.create!(region: 'BC', tax_type: 'PST', tax_rate: 0.07)
 
+# Create static pages
+StaticPage.create!(title: 'Contact', content: 'Initial contact page content.')
+StaticPage.create!(title: 'About', content: 'Initial about page content.')
+
 # Display the number of products by category
 categories.each do |category|
   puts "Category: #{category.category_name} - #{category.products.count} products"
 end
 
-puts "Seeded #{Category.count} categories and #{Product.count} products."
+puts "Seeded #{Category.count} categories, #{Product.count} products, and #{StaticPage.count} static pages."
