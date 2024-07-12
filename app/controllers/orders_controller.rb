@@ -40,7 +40,12 @@ class OrdersController < ApplicationController
 
   def checkout
     @cart = current_user.cart
-    @order = current_user.orders.build
+    @order = current_user.orders.build(
+      address: current_user.address,
+      city: current_user.city,
+      province_id: current_user.province_id,
+      postal_code: current_user.postal_code
+    )
     @subtotal = @cart.total_price
     @taxes = @cart.total_taxes
     @total = @subtotal + @taxes
@@ -49,6 +54,6 @@ class OrdersController < ApplicationController
   private
 
   def order_params
-    params.require(:order).permit(:status, :address, :city, :province, :postal_code)
+    params.require(:order).permit(:status, :address, :city, :province_id, :postal_code)
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_11_195147) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_12_201244) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -131,6 +131,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_11_195147) do
     t.string "city"
     t.string "province"
     t.string "postal_code"
+    t.integer "province_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
@@ -142,6 +143,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_11_195147) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "image_url"
+  end
+
+  create_table "provinces", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "abbreviation"
   end
 
   create_table "static_pages", force: :cascade do |t|
@@ -179,7 +187,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_11_195147) do
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
     t.string "region"
+    t.integer "province_id"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["province_id"], name: "index_users_on_province_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
@@ -193,4 +203,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_11_195147) do
   add_foreign_key "order_taxes", "orders"
   add_foreign_key "order_taxes", "taxes"
   add_foreign_key "orders", "users"
+  add_foreign_key "users", "provinces"
 end

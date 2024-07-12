@@ -4,27 +4,27 @@
 <%= form_with(model: @order, local: true) do |form| %>
   <div>
     <%= form.label :address %>
-    <%= form.text_field :address %>
+    <%= form.text_field :address, value: current_user.address %>
   </div>
   <div>
     <%= form.label :city %>
-    <%= form.text_field :city %>
+    <%= form.text_field :city, value: current_user.city %>
   </div>
   <div>
-    <%= form.label :province %>
-    <%= form.text_field :province %>
+    <%= form.label :province_id, "Province" %>
+    <%= form.collection_select :province_id, Province.all, :id, :name, { include_blank: true }, { selected: current_user.province_id } %>
   </div>
   <div>
     <%= form.label :postal_code %>
-    <%= form.text_field :postal_code %>
+    <%= form.text_field :postal_code, value: current_user.postal_code %>
   </div>
 
   <h2>Items</h2>
   <ul>
     <% @cart.cart_items.each do |item| %>
       <li>
-        <% if item.product.image_url.present? %>
-          <%= image_tag(item.product.image_url, alt: item.product.product_name, style: "width: 100px; height: auto;") %>
+        <% if item.product.image.attached? %>
+          <%= image_tag(item.product.image, alt: item.product.product_name, style: "width: 100px; height: auto;") %>
         <% end %>
         <p><%= item.product.product_name %> - Quantity: <%= item.quantity %> - Price: <%= number_to_currency(item.product.price) %></p>
       </li>

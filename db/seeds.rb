@@ -11,6 +11,28 @@ Category.delete_all
 User.delete_all
 Tax.delete_all
 StaticPage.delete_all  # Clear existing static pages
+Province.delete_all  # Clear existing provinces
+
+# Seed provinces
+provinces = [
+  { name: 'Alberta', abbreviation: 'AB' },
+  { name: 'British Columbia', abbreviation: 'BC' },
+  { name: 'Manitoba', abbreviation: 'MB' },
+  { name: 'New Brunswick', abbreviation: 'NB' },
+  { name: 'Newfoundland and Labrador', abbreviation: 'NL' },
+  { name: 'Nova Scotia', abbreviation: 'NS' },
+  { name: 'Ontario', abbreviation: 'ON' },
+  { name: 'Prince Edward Island', abbreviation: 'PE' },
+  { name: 'Quebec', abbreviation: 'QC' },
+  { name: 'Saskatchewan', abbreviation: 'SK' },
+  { name: 'Northwest Territories', abbreviation: 'NT' },
+  { name: 'Nunavut', abbreviation: 'NU' },
+  { name: 'Yukon', abbreviation: 'YT' }
+]
+
+provinces.each do |province|
+  Province.create!(name: province[:name], abbreviation: province[:abbreviation])
+end
 
 # Create a user
 user = User.create!(
@@ -18,7 +40,7 @@ user = User.create!(
   password: 'password',
   address: '123 Main St',
   city: 'Winnipeg',
-  province: 'MB',
+  province: Province.find_by(abbreviation: 'MB'),
   postal_code: 'R3C 0A1'
 )
 
@@ -68,4 +90,4 @@ categories.each do |category|
   puts "Category: #{category.category_name} - #{category.products.count} products"
 end
 
-puts "Seeded #{Category.count} categories, #{Product.count} products, and #{StaticPage.count} static pages."
+puts "Seeded #{Province.count} provinces, #{Category.count} categories, #{Product.count} products, and #{StaticPage.count} static pages."
