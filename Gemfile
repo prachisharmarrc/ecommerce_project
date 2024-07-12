@@ -7,6 +7,8 @@ ruby "3.3.0"
 gem 'faker'
 gem 'activeadmin'
 gem 'sassc-rails'
+gem 'activeadmin_quill_editor'
+
 
 
 

@@ -16,7 +16,7 @@ Rails.application.routes.draw do
       get 'checkout'
     end
   end
-   get '/static_pages/:title', to: 'static_pages#show', as: 'static_page'
+    get '/pages/:title', to: 'static_pages#show', as: 'static_page'
   
   root 'products#index'
 end

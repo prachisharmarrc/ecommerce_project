@@ -9,7 +9,10 @@ class ProductsController < ApplicationController
     if params[:category_id].present?
       @products = @products.joins(:categories).where(categories: { id: params[:category_id] })
     end
+    @products = @products.page(params[:page]).per(10)
   end
+
+
 
   def show
     @product = Product.find(params[:id])
