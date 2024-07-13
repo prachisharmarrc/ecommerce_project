@@ -21,13 +21,13 @@ class Order < ApplicationRecord
   end
 
   def applicable_taxes
-    Tax.where(region: province)
-  end
-  def self.ransackable_attributes(auth_object = nil)
-    ["created_at", "id", "status", "total_price", "user_id", "address", "city", "province", "postal_code", "updated_at"]
+    Tax.where(region: province.abbreviation)
   end
 
-  # Optionally, you can also define ransackable associations if needed
+  def self.ransackable_attributes(auth_object = nil)
+    ["created_at", "id", "status", "total_price", "user_id", "address", "city", "province_id", "postal_code", "updated_at"]
+  end
+
   def self.ransackable_associations(auth_object = nil)
     ["order_items", "products", "order_taxes", "taxes"]
   end

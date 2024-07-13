@@ -8,6 +8,11 @@ class Product < ApplicationRecord
   validates :image, presence: true
 
   scope :search, ->(query) { where("product_name LIKE ?", "%#{query}%") if query.present? }
+  # scope :search, ->(query) { where("product_name LIKE ?", "%#{query}%") if query.present? }
+  scope :on_sale, -> { where(on_sale: true) }
+  scope :new_products, -> { where('created_at >= ?', 3.days.ago) }
+  scope :recently_updated, -> { where('updated_at >= ?', 3.days.ago).where.not(id: new_products.pluck(:id)) }
+
 
   def self.ransackable_associations(auth_object = nil)
     ["cart_items", "categories", "order_items", "orders"]

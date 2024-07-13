@@ -4,19 +4,19 @@
 <%= form_with(model: @order, local: true) do |form| %>
   <div>
     <%= form.label :address %>
-    <%= form.text_field :address, value: current_user.address %>
+    <%= form.text_field :address %>
   </div>
   <div>
     <%= form.label :city %>
-    <%= form.text_field :city, value: current_user.city %>
+    <%= form.text_field :city %>
   </div>
   <div>
     <%= form.label :province_id, "Province" %>
-    <%= form.collection_select :province_id, Province.all, :id, :name, { include_blank: true }, { selected: current_user.province_id } %>
+    <%= form.collection_select :province_id, Province.all, :id, :name, include_blank: true %>
   </div>
   <div>
     <%= form.label :postal_code %>
-    <%= form.text_field :postal_code, value: current_user.postal_code %>
+    <%= form.text_field :postal_code %>
   </div>
 
   <h2>Items</h2>

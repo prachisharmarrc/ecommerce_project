@@ -47,7 +47,7 @@ class OrdersController < ApplicationController
       postal_code: current_user.postal_code
     )
     @subtotal = @cart.total_price
-    @taxes = @cart.total_taxes
+    @taxes = @order.applicable_taxes.sum { |tax| tax.tax_rate * @subtotal }
     @total = @subtotal + @taxes
   end
 

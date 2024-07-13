@@ -9,10 +9,20 @@ class ProductsController < ApplicationController
     if params[:category_id].present?
       @products = @products.joins(:categories).where(categories: { id: params[:category_id] })
     end
+
+    if params[:filter].present?
+      case params[:filter]
+      when 'on_sale'
+        @products = @products.on_sale
+      when 'new'
+        @products = @products.new_products
+      when 'recently_updated'
+        @products = @products.recently_updated
+      end
+    end
+
     @products = @products.page(params[:page]).per(10)
   end
-
-
 
   def show
     @product = Product.find(params[:id])
