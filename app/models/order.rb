@@ -7,6 +7,7 @@ class Order < ApplicationRecord
   has_many :taxes, through: :order_taxes
 
   validates :address, :city, :province_id, :postal_code, presence: true
+  # validates :address, presence: true
 
   def total_price
     order_items.sum { |item| item.quantity * item.price }

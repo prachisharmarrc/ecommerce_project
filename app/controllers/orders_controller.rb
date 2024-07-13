@@ -32,8 +32,10 @@ class OrdersController < ApplicationController
       end
 
       @cart.cart_items.destroy_all
-      redirect_to @order, notice: 'Order was successfully created.'
+      flash[:notice] = 'Order was successfully created.'
+      redirect_to @order
     else
+      flash[:alert] = 'There was an error creating your order. Please try again.'
       render :checkout
     end
   end
