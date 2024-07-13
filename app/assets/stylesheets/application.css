@@ -67,4 +67,24 @@
   .cart-item-actions form {
     margin-left: 1rem;
   }
+  .flash {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+  }
+  
+  .flash.notice {
+    background-color: #dff0d8;
+    color: #3c763d;
+  }
+  
+  .flash.alert {
+    background-color: #f2dede;
+    color: #a94442;
+  }
+  
+  .flash.error {
+    background-color: #f2dede;
+    color: #a94442;
+  }
   
