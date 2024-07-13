@@ -11,7 +11,7 @@
     <%= form.text_field :city %>
   </div>
   <div>
-    <%= form.label :province_id, "Province" %>
+    <%= form.label :province %>
     <%= form.collection_select :province_id, Province.all, :id, :name, include_blank: true %>
   </div>
   <div>

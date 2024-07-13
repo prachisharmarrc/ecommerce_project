@@ -6,7 +6,7 @@ class Order < ApplicationRecord
   has_many :order_taxes, dependent: :destroy
   has_many :taxes, through: :order_taxes
 
-  validates :address, :city, :province, :postal_code, presence: true
+  validates :address, :city, :province_id, :postal_code, presence: true
 
   def total_price
     order_items.sum { |item| item.quantity * item.price }
@@ -21,7 +21,15 @@ class Order < ApplicationRecord
   end
 
   def applicable_taxes
-    Tax.where(region: province.abbreviation)
+    if province.nil?
+      Rails.logger.debug "Order #{id} has no associated province."
+      []
+    else
+      Rails.logger.debug "Order #{id} has province: #{province.abbreviation}."
+      taxes = Tax.where(region: province.abbreviation)
+      Rails.logger.debug "Applicable taxes: #{taxes.inspect}"
+      taxes
+    end
   end
 
   def self.ransackable_attributes(auth_object = nil)

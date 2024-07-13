@@ -74,12 +74,30 @@ categories = [
   end
 end
 
-# Create taxes
-Tax.create!(region: 'MB', tax_type: 'GST', tax_rate: 0.05)
-Tax.create!(region: 'MB', tax_type: 'PST', tax_rate: 0.07)
-Tax.create!(region: 'ON', tax_type: 'HST', tax_rate: 0.13)
-Tax.create!(region: 'BC', tax_type: 'GST', tax_rate: 0.05)
-Tax.create!(region: 'BC', tax_type: 'PST', tax_rate: 0.07)
+# Seed taxes for provinces
+taxes = [
+  { region: 'AB', tax_type: 'GST', tax_rate: 0.05 },
+  { region: 'BC', tax_type: 'GST', tax_rate: 0.05 },
+  { region: 'BC', tax_type: 'PST', tax_rate: 0.07 },
+  { region: 'MB', tax_type: 'GST', tax_rate: 0.05 },
+  { region: 'MB', tax_type: 'PST', tax_rate: 0.07 },
+  { region: 'NB', tax_type: 'HST', tax_rate: 0.15 },
+  { region: 'NL', tax_type: 'HST', tax_rate: 0.15 },
+  { region: 'NS', tax_type: 'HST', tax_rate: 0.15 },
+  { region: 'ON', tax_type: 'HST', tax_rate: 0.13 },
+  { region: 'PE', tax_type: 'HST', tax_rate: 0.15 },
+  { region: 'QC', tax_type: 'GST', tax_rate: 0.05 },
+  { region: 'QC', tax_type: 'PST', tax_rate: 0.09975 },
+  { region: 'SK', tax_type: 'GST', tax_rate: 0.05 },
+  { region: 'SK', tax_type: 'PST', tax_rate: 0.06 },
+  { region: 'NT', tax_type: 'GST', tax_rate: 0.05 },
+  { region: 'NU', tax_type: 'GST', tax_rate: 0.05 },
+  { region: 'YT', tax_type: 'GST', tax_rate: 0.05 }
+]
+
+taxes.each do |tax|
+  Tax.create!(region: tax[:region], tax_type: tax[:tax_type], tax_rate: tax[:tax_rate])
+end
 
 # Create static pages
 StaticPage.create!(title: 'Contact', content: 'Initial contact page content.')
