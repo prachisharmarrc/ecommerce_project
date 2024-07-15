@@ -6,6 +6,9 @@ class Product < ApplicationRecord
   has_one_attached :image
 
   validates :image, presence: true
+  validates :product_name, :description, :price, :stock_quantity, presence: true
+  validates :price, numericality: { greater_than_or_equal_to: 0 }
+  validates :stock_quantity, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   scope :search, ->(query) { where("product_name LIKE ?", "%#{query}%") if query.present? }
   # scope :search, ->(query) { where("product_name LIKE ?", "%#{query}%") if query.present? }
