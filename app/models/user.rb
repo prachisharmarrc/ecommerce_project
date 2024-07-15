@@ -8,5 +8,6 @@ class User < ApplicationRecord
   
     has_many :orders, dependent: :destroy
     has_one :cart
+    validates :email, :encrypted_password, presence: true
   end
   
