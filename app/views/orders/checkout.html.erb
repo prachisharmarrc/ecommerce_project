@@ -12,7 +12,7 @@
   </div>
   <div>
     <%= form.label :province %>
-    <%= form.text_field :province %>
+    <%= form.collection_select :province_id, Province.all, :id, :name, include_blank: true %>
   </div>
   <div>
     <%= form.label :postal_code %>
@@ -23,8 +23,8 @@
   <ul>
     <% @cart.cart_items.each do |item| %>
       <li>
-        <% if item.product.image_url.present? %>
-          <%= image_tag(item.product.image_url, alt: item.product.product_name, style: "width: 100px; height: auto;") %>
+        <% if item.product.image.attached? %>
+          <%= image_tag(item.product.image, alt: item.product.product_name, style: "width: 100px; height: auto;") %>
         <% end %>
         <p><%= item.product.product_name %> - Quantity: <%= item.quantity %> - Price: <%= number_to_currency(item.product.price) %></p>
       </li>

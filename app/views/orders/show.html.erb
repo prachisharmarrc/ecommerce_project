@@ -1,27 +1,123 @@
 <!-- app/views/orders/show.html.erb -->
-<h1>Order #<%= @order.id %></h1>
-<p>Total: <%= number_to_currency(@order.total_price) %></p>
-<p>Status: <%= @order.status %></p>
-
-<h2>Items</h2>
-<ul>
-  <% @order.order_items.each do |item| %>
-    <li>
-      <% if item.product.image_url.present? %>
-        <%= image_tag(item.product.image_url, alt: item.product.product_name, style: "width: 100px; height: auto;") %>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Invoice</title>
+  <style>
+    .invoice-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      color: #333;
+    }
+    .invoice-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .invoice-header h1 {
+      margin: 0;
+      font-size: 2.5em;
+      color: #4CAF50;
+    }
+    .invoice-details {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .invoice-details div {
+      width: 48%;
+    }
+    .invoice-details h2 {
+      margin-top: 0;
+      font-size: 1.2em;
+      color: #4CAF50;
+    }
+    .invoice-items table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    .invoice-items th, .invoice-items td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+    .invoice-items th {
+      background-color: #f4f4f4;
+    }
+    .invoice-totals {
+      text-align: right;
+      margin-bottom: 20px;
+    }
+    .invoice-totals div {
+      margin-bottom: 5px;
+    }
+    .invoice-totals strong {
+      font-size: 1.2em;
+      color: #4CAF50;
+    }
+    .invoice-footer {
+      text-align: center;
+      margin-top: 20px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <div class="invoice-container">
+    <div class="invoice-header">
+      <h1>Invoice</h1>
+    </div>
+    <div class="invoice-details">
+      <div>
+        <h2>Billing Details</h2>
+        <p><strong>Address:</strong> <%= @order.address %></p>
+        <p><strong>City:</strong> <%= @order.city %></p>
+        <p><strong>Province:</strong> <%= @order.province.name %></p>
+        <p><strong>Postal Code:</strong> <%= @order.postal_code %></p>
+      </div>
+      <div>
+        <h2>Order Details</h2>
+        <p><strong>Order ID:</strong> <%= @order.id %></p>
+        <p><strong>Date:</strong> <%= @order.created_at.strftime('%B %d, %Y') %></p>
+        <%# <p><strong>Status:</strong> <%= @order.status %></p> 
+      </div>
+    </div>
+    <div class="invoice-items">
+      <h2>Items</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @order.order_items.each do |item| %>
+            <tr>
+              <td><%= item.product.product_name %></td>
+              <td><%= item.quantity %></td>
+              <td><%= number_to_currency(item.price) %></td>
+              <td><%= number_to_currency(item.quantity * item.price) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="invoice-totals">
+      <div><strong>Subtotal:</strong> <%= number_to_currency(@order.total_price) %></div>
+      <% @order.order_taxes.each do |order_tax| %>
+        <div><strong><%= order_tax.tax.tax_type %> (<%= order_tax.tax.region %>):</strong> <%= number_to_currency(order_tax.tax_amount) %></div>
       <% end %>
-      <p><%= item.product.product_name %> - Quantity: <%= item.quantity %> - Price: <%= number_to_currency(item.price) %></p>
-    </li>
-  <% end %>
-</ul>
-
-<h3>Taxes</h3>
-<ul>
-  <% @order.order_taxes.each do |order_tax| %>
-    <li><%= order_tax.tax.tax_type %> - <%= number_to_currency(order_tax.tax_amount) %></li>
-  <% end %>
-</ul>
-
-<p>Total Amount: <%= number_to_currency(@order.total_amount) %></p>
-
-<%= link_to 'Back to Orders', orders_path %>
+      <div><strong>Total Amount:</strong> <%= number_to_currency(@order.total_amount) %></div>
+    </div>
+    <div class="invoice-footer">
+      <p>Thank you for your purchase!</p>
+      <p><%= link_to 'Back to Orders', orders_path %></p>
+    </div>
+  </div>
+</body>
+</html>

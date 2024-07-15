@@ -5,6 +5,11 @@ ruby "3.3.0"
  gem 'kaminari'
 #  gem 'will_paginate', '~> 3.3'
 gem 'faker'
+gem 'activeadmin'
+gem 'sassc-rails'
+gem 'activeadmin_quill_editor'
+
+
 
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"

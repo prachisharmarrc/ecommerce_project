@@ -32,23 +32,30 @@ class OrdersController < ApplicationController
       end
 
       @cart.cart_items.destroy_all
-      redirect_to @order, notice: 'Order was successfully created.'
+      flash[:notice] = 'Order was successfully created.'
+      redirect_to @order
     else
+      flash[:alert] = 'There was an error creating your order. Please try again.'
       render :checkout
     end
   end
 
   def checkout
     @cart = current_user.cart
-    @order = current_user.orders.build
+    @order = current_user.orders.build(
+      address: current_user.address,
+      city: current_user.city,
+      province_id: current_user.province_id,
+      postal_code: current_user.postal_code
+    )
     @subtotal = @cart.total_price
-    @taxes = @cart.total_taxes
+    @taxes = @order.applicable_taxes.sum { |tax| tax.tax_rate * @subtotal }
     @total = @subtotal + @taxes
   end
 
   private
 
   def order_params
-    params.require(:order).permit(:status, :address, :city, :province, :postal_code)
+    params.require(:order).permit(:status, :address, :city, :province_id, :postal_code)
   end
 end
