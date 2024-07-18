@@ -1,6 +1,11 @@
 /* app/assets/stylesheets/application.css */
 
 /* Basic reset */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@import "custom";
 * {
     margin: 0;
     padding: 0;
@@ -86,5 +91,9 @@
   .flash.error {
     background-color: #f2dede;
     color: #a94442;
+  }
+
+  a{
+    color: blue;
   }
   

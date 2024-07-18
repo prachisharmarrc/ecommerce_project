@@ -2,36 +2,32 @@
 <html>
 <head>
   <title>TShirtHaven</title>
+  <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
   <%= stylesheet_link_tag "application", media: "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>
 <body>
-  <header>
-    <nav>
-      <ul>
-        <li><%= link_to 'Home', root_path %></li>
-        <li><%= link_to 'Products', products_path %></li>
-        <li><%= link_to 'Categories', categories_path %></li>
-        <li><%= link_to 'Cart', cart_path %></li>
-        <li><%= link_to 'Orders', orders_path %></li>
+  <header class="bg-gray-800 text-white py-4">
+    <nav class="container mx-auto flex justify-between items-center">
+      <ul class="flex space-x-4">
+        <li><%= link_to 'Home', root_path, class: "hover:text-gray-400" %></li>
+        <li><%= link_to 'Products', products_path, class: "hover:text-gray-400" %></li>
+        <li><%= link_to 'Categories', categories_path, class: "hover:text-gray-400" %></li>
+        <li><%= link_to 'Cart', cart_path, class: "hover:text-gray-400" %></li>
+        <li><%= link_to 'Orders', orders_path, class: "hover:text-gray-400" %></li>
+      </ul>
+      <ul class="flex space-x-4">
         <% if user_signed_in? %>
-          <li><%= link_to "Logout", destroy_user_session_path, method: :delete, data: { confirm: "Are you sure you want to logout?" } %>
+          <li><%= link_to "Logout", destroy_user_session_path, method: :delete, data: { confirm: "Are you sure you want to logout?" }, class: "hover:text-gray-400" %></li>
         <% else %>
-          <li><%= link_to 'Login', new_user_session_path %></li>
-          <li><%= link_to 'Sign Up', new_user_registration_path %></li>
+          <li><%= link_to 'Login', new_user_session_path, class: "hover:text-gray-400" %></li>
+          <li><%= link_to 'Sign Up', new_user_registration_path, class: "hover:text-gray-400" %></li>
         <% end %>
       </ul>
     </nav>
   </header>
-
-  <div id="flash-messages">
-    <% flash.each do |key, value| %>
-      <div class="flash <%= key %>"><%= value %></div>
-    <% end %>
-  </div>
-
-  <main>
+  <main class="container mx-auto mt-28 px-5">
     <%= yield %>
   </main>
 </body>

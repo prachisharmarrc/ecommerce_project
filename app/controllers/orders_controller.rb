@@ -1,3 +1,4 @@
+# app/controllers/orders_controller.rb
 class OrdersController < ApplicationController
   before_action :authenticate_user!
 
@@ -22,20 +23,29 @@ class OrdersController < ApplicationController
       @cart.cart_items.each do |cart_item|
         @order.order_items.create!(
           product_id: cart_item.product_id,
-          quantity: cart_item.quantity,
-          price: cart_item.product.price
+          quantity:   cart_item.quantity,
+          price:      cart_item.product.price
         )
       end
 
       @order.applicable_taxes.each do |tax|
-        @order.order_taxes.create!(tax: tax, tax_amount: tax.tax_rate * @order.total_price)
+        @order.order_taxes.create!(tax:, tax_amount: tax.tax_rate * @order.total_price)
       end
 
       @cart.cart_items.destroy_all
-      flash[:notice] = 'Order was successfully created.'
+
+      begin
+        # Send email notification
+        OrderMailer.order_confirmation(@order).deliver_now
+        flash[:notice] = "Order was successfully created and email sent."
+      rescue StandardError => e
+        Rails.logger.error "Failed to send order confirmation email: #{e.message}"
+        flash[:alert] = "Order was successfully created but failed to send email notification."
+      end
+
       redirect_to @order
     else
-      flash[:alert] = 'There was an error creating your order. Please try again.'
+      flash[:alert] = "There was an error creating your order. Please try again."
       render :checkout
     end
   end
@@ -43,8 +53,8 @@ class OrdersController < ApplicationController
   def checkout
     @cart = current_user.cart
     @order = current_user.orders.build(
-      address: current_user.address,
-      city: current_user.city,
+      address:     current_user.address,
+      city:        current_user.city,
       province_id: current_user.province_id,
       postal_code: current_user.postal_code
     )

@@ -1,12 +1,14 @@
 class Order < ApplicationRecord
   belongs_to :user
-  belongs_to :province  
+  belongs_to :province
   has_many :order_items, dependent: :destroy
   has_many :products, through: :order_items
   has_many :order_taxes, dependent: :destroy
   has_many :taxes, through: :order_taxes
 
   validates :address, :city, :province_id, :postal_code, presence: true
+  validates :address, :city, :postal_code, length: { maximum: 255 }
+  validates :province_id, numericality: { only_integer: true }
   # validates :address, presence: true
 
   def total_price
@@ -34,7 +36,8 @@ class Order < ApplicationRecord
   end
 
   def self.ransackable_attributes(auth_object = nil)
-    ["created_at", "id", "status", "total_price", "user_id", "address", "city", "province_id", "postal_code", "updated_at"]
+    ["created_at", "id", "status", "total_price", "user_id", "address", "city", "province_id",
+     "postal_code", "updated_at"]
   end
 
   def self.ransackable_associations(auth_object = nil)

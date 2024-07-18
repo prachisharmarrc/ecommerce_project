@@ -1,7 +1,18 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
+  config.action_mailer.delivery_method = :smtp
+config.action_mailer.smtp_settings = {
+  address: 'smtp.mailgun.org',
+  port: 587,
+  domain: ENV['MAILGUN_DOMAIN'],
+  user_name: 'postmaster@' + ENV['MAILGUN_DOMAIN'],
+  password: ENV['MAILGUN_API_KEY'],
+  authentication: 'plain',
+  enable_starttls_auto: true
+}
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  config.action_mailer.raise_delivery_errors = true
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded any time

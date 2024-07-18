@@ -1,39 +1,45 @@
-<!-- app/views/orders/checkout.html.erb -->
-<h1>Checkout</h1>
+<h1 class="text-4xl font-bold mb-8 text-center text-indigo-600">Checkout</h1>
 
-<%= form_with(model: @order, local: true) do |form| %>
+<%= form_with(model: @order, local: true, class: "max-w-lg mx-auto p-8 bg-white rounded-lg shadow-md space-y-6") do |form| %>
   <div>
-    <%= form.label :address %>
-    <%= form.text_field :address %>
+    <%= form.label :address, class: "block text-gray-700 font-semibold" %>
+    <%= form.text_field :address, class: "mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" %>
   </div>
   <div>
-    <%= form.label :city %>
-    <%= form.text_field :city %>
+    <%= form.label :city, class: "block text-gray-700 font-semibold" %>
+    <%= form.text_field :city, class: "mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" %>
   </div>
   <div>
-    <%= form.label :province %>
-    <%= form.collection_select :province_id, Province.all, :id, :name, include_blank: true %>
+    <%= form.label :province, class: "block text-gray-700 font-semibold" %>
+    <%= form.collection_select :province_id, Province.all, :id, :name, { include_blank: true }, class: "mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" %>
   </div>
   <div>
-    <%= form.label :postal_code %>
-    <%= form.text_field :postal_code %>
+    <%= form.label :postal_code, class: "block text-gray-700 font-semibold" %>
+    <%= form.text_field :postal_code, class: "mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" %>
   </div>
 
-  <h2>Items</h2>
-  <ul>
+  <h2 class="text-2xl font-bold mb-4 text-gray-700">Items</h2>
+  <ul class="divide-y divide-gray-200">
     <% @cart.cart_items.each do |item| %>
-      <li>
+      <li class="py-4 flex items-center">
         <% if item.product.image.attached? %>
-          <%= image_tag(item.product.image, alt: item.product.product_name, style: "width: 100px; height: auto;") %>
+          <%= image_tag(item.product.image, alt: item.product.product_name, class: "w-24 h-24 object-cover mr-4") %>
         <% end %>
-        <p><%= item.product.product_name %> - Quantity: <%= item.quantity %> - Price: <%= number_to_currency(item.product.price) %></p>
+        <div class="flex-1">
+          <p class="text-lg font-semibold text-gray-900"><%= item.product.product_name %></p>
+          <p class="text-gray-700">Quantity: <%= item.quantity %> - Price: <%= number_to_currency(item.product.price) %></p>
+        </div>
       </li>
     <% end %>
   </ul>
 
-  <p>Subtotal: <%= number_to_currency(@subtotal) %></p>
-  <p>Taxes: <%= number_to_currency(@taxes) %></p>
-  <p>Total: <%= number_to_currency(@total) %></p>
+  <div class="mt-6 space-y-2">
+    <p class="text-lg font-semibold">Subtotal: <%= number_to_currency(@subtotal) %></p>
+    <p class="text-lg font-semibold">Taxes: <%= number_to_currency(@taxes) %></p>
+    <p class="text-lg font-semibold">Total: <%= number_to_currency(@total) %></p>
+  </div>
 
-  <%= form.submit "Place Order" %>
+  <div class="mt-8">
+    <%= form.submit "Place Order", class: "w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-red bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition transform hover:scale-105 duration-200 ease-in-out" %>
+  </div>
 <% end %>
