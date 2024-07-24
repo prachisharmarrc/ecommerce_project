@@ -1,6 +1,9 @@
+<!-- app/views/layouts/application.html.erb -->
 <!DOCTYPE html>
 <html>
 <head>
+
+  
   <title>TShirtHaven</title>
   <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
   <%= stylesheet_link_tag "application", media: "all" %>
@@ -28,6 +31,7 @@
     </nav>
   </header>
   <main class="container mx-auto mt-28 px-5">
+    <%= render 'shared/breadcrumbs' %>
     <%= yield %>
   </main>
 </body>

@@ -19,6 +19,7 @@ class ProductsController < ApplicationController
 
   def show
     @product = Product.find(params[:id])
+    @category = @product.categories.first # Assuming a product can have multiple categories
   end
 
   private

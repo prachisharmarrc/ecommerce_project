@@ -1,0 +1,21 @@
+ <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">\<!-- app/views/shared/_breadcrumbs.html.erb -->
+
+<nav class="bg-grey-light rounded-md w-full mb-4">
+  <ol class="list-reset flex text-grey-dark">
+    <li>
+      <%= link_to 'Home', root_path, class: 'text-blue-600 hover:text-blue-700' %>
+      <span class="mx-2">/</span>
+    </li>
+    <% if @category %>
+      <li>
+        <%= link_to @category.category_name, category_path(@category), class: 'text-blue-600 hover:text-blue-700' %>
+        <span class="mx-2">/</span>
+      </li>
+    <% end %>
+    <% if @product %>
+      <li>
+        <span><%= @product.product_name %></span>
+      </li>
+    <% end %>
+  </ol>
+</nav>

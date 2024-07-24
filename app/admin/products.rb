@@ -1,4 +1,3 @@
-# app/admin/products.rb
 ActiveAdmin.register Product do
   permit_params :product_name, :description, :price, :stock_quantity, :image, category_ids: []
 
@@ -54,6 +53,5 @@ ActiveAdmin.register Product do
   filter :description
   filter :price
   filter :stock_quantity
-  filter :categories, as: :select, collection: Category.all.map { |category| [category.category_name, category.id] }
-
+  filter :categories, as: :select, collection: proc { Category.all.map { |category| [category.category_name, category.id] } }
 end

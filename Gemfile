@@ -9,7 +9,7 @@ gem 'activeadmin'
 gem 'sassc-rails'
 gem 'activeadmin_quill_editor'
 # Gemfile
-gem 'mailgun-ruby', '~>1.2.6'
+# gem 'mailgun-ruby', '~>1.2.6'
 # Gemfile
 gem 'dotenv-rails', groups: [:development, :test]
 gem 'rubocop'

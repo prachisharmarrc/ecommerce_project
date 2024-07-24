@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -b '0.0.0.0'"
+    volumes:
+      - .:/myapp
+    ports:
+      - "3000:3000"
+    environment:
+      RAILS_ENV: development
+      # MAILGUN_DOMAIN: your-mailgun-domain
+      # MAILGUN_API_KEY: your-mailgun-api-key
+    depends_on:
+      - db
+
+  db:
+    image: nouchka/sqlite3
+    volumes:
+      - ./db/development.sqlite3:/myapp/db/development.sqlite3
+      - ./db/test.sqlite3:/myapp/db/test.sqlite3
+
+volumes:
+  db_data:
